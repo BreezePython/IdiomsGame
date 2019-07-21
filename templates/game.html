@@ -1,0 +1,69 @@
+{% extends "layout.html"%}
+
+{% block contents %}
+<div class="form-group has-success">
+    <h3 id='round_num' class="round_num">ROUND 1</h3>
+</div>
+
+<div class="form-group rank">
+
+    <table class="table table-hover  table-bordered table_show table-condensed">
+        <tbody>
+        <tr>
+            <th>成语</th>
+            <td id="idiom_name"> {{idiom.name}} ({{idiom.speak}})</td>
+        </tr>
+        <tr>
+            <th>解释</th>
+            <td id="idiom_meaning">{{idiom.meaning}}</td>
+        </tr>
+        <tr>
+            <th>示例</th>
+            <td id="idiom_example"> {{idiom.example}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="form-group has-success">
+    <div class="input-group">
+        <div class="input-group-addon" required autofocus>
+            成语：
+        </div>
+        <input id='user_idiom' class="form-control">
+
+    </div>
+
+</div>
+<div class="form-group ">
+    <button class="form-control btn-primary" id="load">用户：{{user}} 作答</button>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#load').click(function () {
+            let user_idiom = $('#user_idiom').val();
+            $('#user_idiom').val('');
+            if (user_idiom.length != 4) {
+                alert("请填写四字成语...");
+            } else {
+                $.ajax({
+                    url: '/more/' + user_idiom,
+                    type: 'get',
+                    success: function (data) {
+                        $('.result').html(data);
+                        if (data['code'] == 200) {
+                            $('#round_num').html('ROUND ' + data['round']);
+                            $('#idiom_name').html(data['info']['name'] + ' (' + data['info']['speak'] + ')');
+                            $('#idiom_meaning').html(data['info']['meaning']);
+                            $('#example').html('ROUND ' + data['info']['example']);
+                        } else {
+                            alert(data['error']);
+                            $(location).attr('href', data['url']);
+                        }
+                    }
+                })
+            }
+        })
+    })
+</script>
+{% endblock %}

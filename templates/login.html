@@ -1,0 +1,46 @@
+{% extends "layout.html"%}
+
+{% block contents %}
+<form method="post">
+    <div class="form-group has-success">
+        <div class="input-group">
+            <div class="input-group-addon">
+                选手姓名：
+            </div>
+            <input id='name' name="name" class="form-control" required autofocus>
+
+        </div>
+
+    </div>
+    <div class="form-group ">
+        <button type="submit" class="form-control btn-primary" id="load">火前留名</button>
+    </div>
+</form>
+<div class="form-group ">
+    <span class="label label-info">如果战绩足够出色，你的名字也将出现在下方！</span>
+</div>
+<div class="form-group table_show">
+
+    <table class="table table-hover  table-bordered">
+        <thead>
+        <tr>
+            <th>排名</th>
+            <th>挑战者</th>
+            <th>对答次数</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if rank_list|length %}
+            {% for rank in rank_list %}
+            <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{rank.name}}</td>
+                <td>{{rank.round_num}}</td>
+            </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
